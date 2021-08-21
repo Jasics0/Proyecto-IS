@@ -12,17 +12,22 @@ import java.net.URL;
 public class Documento {
 
     private float size;
-    private String tittle;
+    private String title;
 
     public Documento(String url) {
         try {
             final Document document=Jsoup.connect(url).get();
             URLConnection con = new URL(url).openConnection();
             size = con.getContentLength();
-            tittle=document.title();
+            title=document.title();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void main(String[] args) {
+        Documento d = new Documento("https://www.youtube.com/");
+        System.out.println(d.getTitle());
     }
 
     public float getSize() {
@@ -33,12 +38,12 @@ public class Documento {
         this.size = size;
     }
 
-    public String getTittle() {
-        return tittle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTittle(String tittle) {
-        this.tittle = tittle;
+    public void setTitle(String title) {
+        this.title = title;
     }
     
     
