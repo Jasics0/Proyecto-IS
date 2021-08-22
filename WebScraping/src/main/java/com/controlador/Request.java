@@ -14,8 +14,7 @@ import java.util.Properties;
  * @author javie
  */
 public class Request {
-
-
+    
     public String JSONof(String url) { //Devuelve un String formateado JSON de un link proporcionado
         return new Documento(url).documentJSON();
     }
