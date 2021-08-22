@@ -1,5 +1,6 @@
 package com.modelo;
 
+import com.google.gson.Gson;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.net.URLConnection;
@@ -11,23 +12,18 @@ import java.net.URL;
  */
 public class Documento {
 
-    private float size;
     private String title;
+    private float size;
 
     public Documento(String url) {
         try {
-            final Document document=Jsoup.connect(url).get();
+            final Document document = Jsoup.connect(url).get();
             URLConnection con = new URL(url).openConnection();
-            size = con.getContentLength();
-            title=document.title();
+            size = con.getContentLength() / 1024;
+            title = document.title();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    
-    public static void main(String[] args) {
-        Documento d = new Documento("https://www.youtube.com/");
-        System.out.println(d.getTitle());
     }
 
     public float getSize() {
@@ -45,7 +41,11 @@ public class Documento {
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
+    public String documentJSON() {
+        final String json = new Gson().toJson(this);
+        return json;
+    }
     
 
 }
