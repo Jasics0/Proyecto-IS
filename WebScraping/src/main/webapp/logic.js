@@ -1,9 +1,8 @@
 var xMLHttpRequest = new XMLHttpRequest();
 function findElements() {
     xMLHttpRequest.open("Get", "/WebScraping/AjaxServlet?link=" + document.getElementById("link").value, true);
-    xMLHttpRequest.onreadystatechange = processElements();
+    xMLHttpRequest.onreadystatechange = processElements;
     xMLHttpRequest.send(null);
-
 }
 function processElements() {
     if (xMLHttpRequest.readyState === 4 && xMLHttpRequest.status === 200) {
@@ -14,7 +13,7 @@ function processElements() {
         var headrow = table.insertRow(0);
         var headcell = headrow.insertCell(0);
         headcell.style.backgroundColor = "lightblue";
-        headcell.innerHTML = JSONTopicObject.title;
+        headcell.innerHTML = JSONTopicObject.nlines;
         //var tutorials = JSONTopicObject.topic.tutorial;
     }
 }
