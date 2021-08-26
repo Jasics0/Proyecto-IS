@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.net.URLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -18,66 +19,42 @@ public class Documento {
     private float size;
     private int nlines;
     private int nlinks;
-    private String list_links[];
-
+    private int lines_size[];
+    private ArrayList<String> list_links;
     public Documento(String url) {
         try {
             final Document document = Jsoup.connect(url).get();
             URLConnection con = new URL(url).openConnection();
             size = con.getContentLength() / 1024;
             title = document.title();
-            nlines = lines(document.outerHtml());
-            nlinks = links(document);
-            list_links = new String[nlinks];
-            listLinks(document);
+            lines(document.outerHtml());
+            listLinks(document);            
             //listLinks(document.outerHtml());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private int lines(String html) {
-        return html.split("\n").length;
+    private void lines(String html) {
+        String aux[]=html.split("\n");
+        nlines=aux.length;
+        lines_size= new int[nlines];
+        for (int i = 0; i < aux.length; i++) {
+            System.out.println(aux[i]);
+            lines_size[i]=aux[i].length();
+        }
+ 
     }
 
     private void listLinks(Document d) {
+        list_links = new ArrayList<>();
         Elements href = d.select("a");
-        int i = 0;
+
         for (Element element : href) {
-            list_links[i] = element.attr("abs:href");
-            i++;
+            if (!element.attr("abs:href").equals("") && element.attr("abs:href") != null) {
+                list_links.add(element.attr("abs:href"));            }
         }
-
-//        int count = 0;
-//        String h[] = html.split("\n");
-//        String aux = "";
-//        for (int i = 0; i < h.length; i++) {
-//            if (h[i].contains("href")) {
-//                list_links[count] = "";
-//                for (int j = 0; j < h[i].length(); j++) {
-//                    aux = "" + h[i].charAt(j) + h[i].charAt(j + 1) + h[i].charAt(j + 2) + h[i].charAt(j + 3);
-//
-//                    if (aux.equals("href")) {
-//
-//                        for (int k = (j + 6); k < h[i].length(); k++) {
-//                            if (h[i].charAt(k) != '"') {
-//                                list_links[count] += h[i].charAt(k);
-//                            } else {
-//                                k = h[i].length();
-//                            }
-//                        }
-//                        j = h[i].length();
-//                    }
-//
-//                    aux = "";
-//                }
-//                count++;
-//            }
-//        }
-    }
-
-    private int links(Document d) {
-        return d.select("a").size();
+        nlinks = list_links.size();
     }
 
     public int getNlines() {

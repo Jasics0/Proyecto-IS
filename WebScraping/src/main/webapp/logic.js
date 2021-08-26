@@ -13,7 +13,7 @@ function processElements() {
         var headrow = table.insertRow(0);
         var headcell = headrow.insertCell(0);
         headcell.style.backgroundColor = "lightblue";
-        headcell.innerHTML = JSONTopicObject.nlines;
+        headcell.innerHTML = JSONTopicObject.list_links;
         //var tutorials = JSONTopicObject.topic.tutorial;
     }
 }
