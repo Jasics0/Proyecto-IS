@@ -40,7 +40,6 @@ public class Documento {
         nlines=aux.length;
         lines_size= new int[nlines];
         for (int i = 0; i < aux.length; i++) {
-            System.out.println(aux[i]);
             lines_size[i]=aux[i].length();
         }
  
