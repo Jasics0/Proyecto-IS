@@ -2,13 +2,11 @@ package com.modelo;
 
 import com.google.gson.Gson;
 import java.net.HttpURLConnection;
-import java.net.InetAddress;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.net.URLConnection;
 import java.net.URL;
 import java.util.LinkedList;
-import javax.net.ssl.HttpsURLConnection;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -31,7 +29,6 @@ public class Documento {
             lines(document.outerHtml());
             listLinks(document);
             verifyLink();
-            //listLinks(document.outerHtml());
         } catch (Exception e) {
             e.printStackTrace();
         }
