@@ -17,10 +17,10 @@ function processElements() {
         size.innerHTML = JSONTopicObject.size.toString() + " kb";
         
         var isForm = document.getElementById("isForm");
-        isForm.checked = JSONTopicObject.isForm;
+        isForm.checked = JSONTopicObject.is_form;
         
         var isLogin = document.getElementById("isLogin");
-        isLogin.checked = JSONTopicObject.isLogin;
+        isLogin.checked = JSONTopicObject.is_login;
         
         var nlinks = document.getElementById("nlinks");
         nlinks.innerHTML = JSONTopicObject.nlinks.toString() + ".";
@@ -48,6 +48,18 @@ function processElements() {
             headcell1.innerHTML = index;
             var headcell2 = headrow.insertCell();
             headcell2.innerHTML = line;
+        });
+        
+        var words = document.getElementById("words");
+        words.innerHTML = "<tr><th scope='col'>Words</th><th scope='cols'>Frequency</th></tr>";
+        
+        JSONTopicObject.words_concurrency.forEach(tuple => {
+            console.log(tuple);
+            var headrow = words.insertRow();
+            var headcell1 = headrow.insertCell();
+            headcell1.innerHTML = tuple.split("-")[0];
+            var headcell2 = headrow.insertCell();
+            headcell2.innerHTML = tuple.split("-")[1];
         });
         
     }
