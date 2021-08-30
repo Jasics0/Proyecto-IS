@@ -14,11 +14,10 @@ public class Documento {
 
     private String title;
     private float size;
-    private int nlines;
-    private int nlinks;
-    private int lines_size[];
+    private int nlines, nlinks, lines_size[];
     private String list_links[];
     private String links_types[];
+    private boolean isForm, isLogin;
 
     public Documento(String url) {
         try {
@@ -29,6 +28,8 @@ public class Documento {
             lines(document.outerHtml());
             listLinks(document);
             verifyLink();
+            getForms(document);
+            concurrency(document);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,8 +41,10 @@ public class Documento {
         lines_size = new int[nlines];
         for (int i = 0; i < aux.length; i++) {
             lines_size[i] = aux[i].length();
+            if (aux[i].contains("<form")) {
+                isForm = true;
+            }
         }
-
     }
 
     private void listLinks(Document d) {
@@ -65,17 +68,64 @@ public class Documento {
             } else {
                 links_types[i] = "2-";
             }
+        }
+    }
 
+    private void getForms(Document d) {
+        Elements form = d.select("form");
+
+        for (Element element : form) {
+            if (element.attr("id").toLowerCase().contains("login")
+                    || element.attr("name").toLowerCase().contains("login") //
+                    || element.attr("action").toLowerCase().contains("login")
+                    || element.attr("onsubmit").toLowerCase().contains("login")) {//
+                isLogin = true;
+            }
+        }
+    }
+
+    private String filterText(String txt) {
+        txt = txt.toLowerCase();
+        String aux = "";
+        for (int i = 0; i < txt.length(); i++) {
+            // System.out.println((int) txt.charAt(i));
+            if (((int) txt.charAt(i) >= 97 && (int) txt.charAt(i) <= 122) || (int) txt.charAt(i) == 32) {
+                aux += txt.charAt(i);
+            }
+        }
+        return aux;
+    }
+
+    private void concurrency(Document d) {
+        String text = filterText(d.text());
+        String palabras[] = text.split(" ");
+        LinkedList<String> words = new LinkedList<>();
+        for (int i = 0; i < palabras.length; i++) {
+            if (!words.contains(palabras[i])) {
+                words.add(palabras[i]);
+            }
+        }
+        int times[] = new int[words.size()];
+        for (int i = 0; i < words.size(); i++) {
+            times[i] = 0;
+            for (int j = 0; j < palabras.length; j++) {
+                if (palabras[j].equals(words.get(i))) {
+                    times[i]++;
+                }
+            }
+        }
+        for (int i = 0; i < words.size(); i++) {
+            System.out.println(words.get(i) + ": " + times[i]);
         }
     }
 
     private boolean verify(String url) {
-         try {
+        try {
             HttpURLConnection.setFollowRedirects(false);
             // note : you may also need
             // HttpURLConnection.setInstanceFollowRedirects(false)
             HttpURLConnection con = (HttpURLConnection) new URL(url)
-            .openConnection();
+                    .openConnection();
             con.setRequestMethod("HEAD");
             return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
         } catch (Exception e) {
@@ -157,9 +207,6 @@ public class Documento {
         this.links_types = links_types;
     }
 
-    
-    
-    
     public String documentJSON() {
         final String json = new Gson().toJson(this);
         return json;

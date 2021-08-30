@@ -5,7 +5,7 @@ import com.modelo.Documento;
 import java.util.Properties;
 
 public class Request {
-    
+
     public String JSONof(String url) { //Devuelve un String formateado JSON de un link proporcionado
         return new Documento(url).documentJSON();
     }
@@ -18,4 +18,8 @@ public class Request {
         return new Gson().fromJson(json, Properties.class);
     }
 
+    public static void main(String[] args) {
+        Request r = new Request();
+        System.out.println(r.JSONof("https://www.unillanos.edu.co/index.php/noticias-imagenes/5447-abiertas-inscripciones-para-la-especializacion-en-ingenieria-del-software-de-la-universidad-de-los-llanos"));
+    }
 }
