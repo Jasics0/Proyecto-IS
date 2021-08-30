@@ -64,11 +64,11 @@ public class Documento {
         links_types = new String[nlinks]; //1. html - 2.pdf - 3.otro
         for (int i = 0; i < list_links.length; i++) {
             if (list_links[i].contains(".html")) {
-                links_types[i] = "0-";
+                links_types[i] = "html-";
             } else if (list_links[i].contains(".pdf")) {
-                links_types[i] = "1-";
+                links_types[i] = "pdf-";
             } else {
-                links_types[i] = "2-";
+                links_types[i] = "desconocido-";
             }
         }
     }
