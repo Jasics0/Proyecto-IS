@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.net.URLConnection;
 import java.net.URL;
+import java.text.Normalizer;
 import java.util.LinkedList;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -17,7 +18,8 @@ public class Documento {
     private int nlines, nlinks, lines_size[];
     private String list_links[];
     private String links_types[];
-    private boolean isForm, isLogin;
+    private boolean is_form, is_login;
+    private String words_concurrency[];
 
     public Documento(String url) {
         try {
@@ -42,7 +44,7 @@ public class Documento {
         for (int i = 0; i < aux.length; i++) {
             lines_size[i] = aux[i].length();
             if (aux[i].contains("<form")) {
-                isForm = true;
+                is_form = true;
             }
         }
     }
@@ -79,51 +81,74 @@ public class Documento {
                     || element.attr("name").toLowerCase().contains("login") //
                     || element.attr("action").toLowerCase().contains("login")
                     || element.attr("onsubmit").toLowerCase().contains("login")) {//
-                isLogin = true;
+                is_login = true;
             }
         }
     }
 
-    private String filterText(String txt) {
+    private String[] filterText(String txt) {
+        LinkedList<String> words = new LinkedList<>();
         txt = txt.toLowerCase();
+        txt = Normalizer.normalize(txt, Normalizer.Form.NFD);
+        txt = txt.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
         String aux = "";
         for (int i = 0; i < txt.length(); i++) {
-            // System.out.println((int) txt.charAt(i));
             if (((int) txt.charAt(i) >= 97 && (int) txt.charAt(i) <= 122) || (int) txt.charAt(i) == 32) {
                 aux += txt.charAt(i);
+            } else {
+                aux += " ";
             }
         }
-        return aux;
+        String aux2 = "";
+        for (int i = 0; i <= aux.length(); i++) {
+            if (i == aux.length()) {
+                if (!aux2.equals("")) {
+                    words.add(aux2);
+                }
+                break;
+            }
+            if (aux.charAt(i) != ' ') {
+                aux2 += aux.charAt(i);
+            } else {
+                if (!aux2.equals("")) {
+                    words.add(aux2);
+                }
+                aux2 = "";
+            }
+        }
+
+        String palabras[] = new String[words.size()];
+        palabras = words.toArray(palabras);
+
+        return palabras;
     }
 
     private void concurrency(Document d) {
-        String text = filterText(d.text());
-        String palabras[] = text.split(" ");
+        String palabras[] = filterText(d.text());
         LinkedList<String> words = new LinkedList<>();
+        LinkedList<Integer> times = new LinkedList<>();
+        int aux = 0;
         for (int i = 0; i < palabras.length; i++) {
             if (!words.contains(palabras[i])) {
                 words.add(palabras[i]);
+                times.add(1);
+            } else {
+                aux = words.indexOf(palabras[i]);
+                times.set(aux, (times.get(aux) + 1));
             }
         }
-        int times[] = new int[words.size()];
+
+        words_concurrency = new String[words.size()];
+
         for (int i = 0; i < words.size(); i++) {
-            times[i] = 0;
-            for (int j = 0; j < palabras.length; j++) {
-                if (palabras[j].equals(words.get(i))) {
-                    times[i]++;
-                }
-            }
-        }
-        for (int i = 0; i < words.size(); i++) {
-            System.out.println(words.get(i) + ": " + times[i]);
+            words_concurrency[i] = words.get(i) + "-" + times.get(i);
+
         }
     }
 
     private boolean verify(String url) {
         try {
             HttpURLConnection.setFollowRedirects(false);
-            // note : you may also need
-            // HttpURLConnection.setInstanceFollowRedirects(false)
             HttpURLConnection con = (HttpURLConnection) new URL(url)
                     .openConnection();
             con.setRequestMethod("HEAD");
