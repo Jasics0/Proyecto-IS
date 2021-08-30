@@ -18,8 +18,4 @@ public class Request {
         return new Gson().fromJson(json, Properties.class);
     }
 
-    public static void main(String[] args) {
-        Request r = new Request();
-        System.out.println(r.JSONof("http://localhost:8090"));
-    }
 }
