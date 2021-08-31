@@ -5,7 +5,7 @@ import com.modelo.Documento;
 import java.util.Properties;
 
 public class Request {
-
+    
     public String JSONof(String url) { //Devuelve un String formateado JSON de un link proporcionado
         return new Documento(url).documentJSON();
     }

@@ -7,6 +7,7 @@ import org.jsoup.nodes.Document;
 import java.net.URLConnection;
 import java.net.URL;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -50,7 +51,7 @@ public class Documento {
     }
 
     private void listLinks(Document d) {
-        LinkedList<String> aux = new LinkedList<>();
+        ArrayList<String> aux= new ArrayList<>();
         Elements href = d.select("a");
 
         for (Element element : href) {
@@ -87,7 +88,7 @@ public class Documento {
     }
 
     private String[] filterText(String txt) {
-        LinkedList<String> words = new LinkedList<>();
+        ArrayList<String> words= new ArrayList<>();
         txt = txt.toLowerCase();
         txt = Normalizer.normalize(txt, Normalizer.Form.NFD);
         txt = txt.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
@@ -125,8 +126,8 @@ public class Documento {
 
     private void concurrency(Document d) {
         String palabras[] = filterText(d.text());
-        LinkedList<String> words = new LinkedList<>();
-        LinkedList<Integer> times = new LinkedList<>();
+        ArrayList<String> words= new ArrayList<>();
+        ArrayList<Integer> times= new ArrayList<>();
         int aux = 0;
         for (int i = 0; i < palabras.length; i++) {
             if (!words.contains(palabras[i])) {
@@ -149,8 +150,7 @@ public class Documento {
     private boolean verify(String url) {
         try {
             HttpURLConnection.setFollowRedirects(false);
-            HttpURLConnection con = (HttpURLConnection) new URL(url)
-                    .openConnection();
+            HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
             con.setRequestMethod("HEAD");
             return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
         } catch (Exception e) {
