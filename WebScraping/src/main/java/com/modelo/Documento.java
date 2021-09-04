@@ -2,6 +2,7 @@ package com.modelo;
 
 import com.google.gson.Gson;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import java.net.URLConnection;
@@ -18,6 +19,7 @@ public class Documento {
     private int nlines, nlinks, lines_size[];
     private String list_links[];
     private String links_types[];
+    private String links_image[];
     private boolean is_form, is_login;
     private String words_concurrency[];
 
@@ -32,6 +34,7 @@ public class Documento {
             verifyLink();
             getForms(document);
             concurrency(document);
+            listImage(document);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,8 +54,12 @@ public class Documento {
         Elements href = d.select("a");
 
         for (Element element : href) {
-            if (!element.attr("abs:href").equals("") && element.attr("abs:href") != null) {
+            try {
+                URL url = new URL(element.attr("abs:href"));
                 aux.add(element.attr("abs:href"));
+
+            } catch (MalformedURLException e) {
+                System.out.println("Is not a url.");
             }
         }
         list_links = new String[aux.size()];
@@ -68,6 +75,20 @@ public class Documento {
                 links_types[i] = "2-";
             }
         }
+    }
+
+    private void listImage(Document d) {
+        ArrayList<String> aux = new ArrayList<>();
+        Elements image = d.select("img");
+
+        for (Element element : image) {
+            if (!element.attr("abs:src").equals("") && element.attr("abs:src") != null) {
+                aux.add(element.attr("abs:src"));
+            }
+        }
+
+        links_image = new String[aux.size()];
+        links_image = aux.toArray(links_image);
     }
 
     private void getForms(Document d) {

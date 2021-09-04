@@ -6,6 +6,12 @@ import java.util.Properties;
 
 public class Request {
     
+    
+    public static void main(String[] args) {
+        Request r=new Request();
+        System.out.println(r.JSONof("https://www.nequi.com.co"));
+    }
+    
     public String JSONof(String url) { //Devuelve un String formateado JSON de un link proporcionado
         return new Documento(url).documentJSON();
     }
