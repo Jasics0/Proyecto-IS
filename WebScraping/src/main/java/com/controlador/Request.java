@@ -4,14 +4,20 @@ import com.google.gson.Gson;
 import com.modelo.Documento;
 import java.util.Properties;
 
-public class Request {
-    
-    
-    public static void main(String[] args) {
-        Request r=new Request();
-        System.out.println(r.JSONof("https://www.nequi.com.co"));
+public class Request extends Thread {
+
+    private String json;
+    private String url;
+
+    public Request(String url) {
+        this.url = url;
     }
-    
+
+    @Override
+    public void run() {
+        json = JSONof(url);
+    }
+
     public String JSONof(String url) { //Devuelve un String formateado JSON de un link proporcionado
         return new Documento(url).documentJSON();
     }
@@ -20,8 +26,7 @@ public class Request {
         return new Gson().fromJson(json, Documento.class);
     }
 
-    public Properties JSONPropierties(String json) { //Devuelve un objeto tipo Propierties de un String formateado JSON. Propierties sirve para extraer las propiedades de un JSON
-        return new Gson().fromJson(json, Properties.class);
+    public String getJson() {
+        return json;
     }
-
 }
