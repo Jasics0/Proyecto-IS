@@ -61,7 +61,7 @@ public class AjaxServlet extends HttpServlet {
 
             }
             json_final += "]}";
-            response.setContentType("text/html");
+            response.setContentType("json/application");
             response.getWriter().write(json_final);
         }
     }
