@@ -22,6 +22,7 @@ public class Documento {
     private String links_image[];
     private boolean is_form, is_login;
     private String words_concurrency[];
+    private String files[];
 
     public Documento(String url) {
         try {
@@ -35,9 +36,27 @@ public class Documento {
             getForms(document);
             concurrency(document);
             listImage(document);
+            files(document);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void files(Document d) {
+        final String extensions = ".aac,.adt,.adts,.accdb,.accde,.accdr,.accdt,.aif,.aifc,.aiff,.aspx,.avi,.bat,.bin,.bmp,.cab,.cda,.csv,.dif,.dll,.doc,.docm,.docx,.dot,.dotx,.eml,.eps,.exe,.flv,.gif,.htm,.html,.ini,.iso,.jar,.jpg,.jpeg,.m4a,.mdb,.mid,.midi,.mov,.mp3,.mp4,.mpeg,.mpg,.msi,.mui,.pdfmpgn,.pot,.potm,.potx,.ppam,.pps,.ppsm,.ppsx,.ppt,.pptm,.pptx,.psd,.pst,.pub,.rar,.rtf,.sldm,.sldx,.swf,.sys,.tif,.tiff,.tmp,.txt,.vob,.vsd,.vsdm,.vsdx,.vss,.vssm,.vst,.vstm,.vstx,.wav,.wbk,.wks,.wma,.wmd,.wmv,.wmz,.wms,.wpd,.wp5,.xla,.xlam,.xll,.xlm,.xls,.xlsm,.xlsx,.xlt,.xltm,.xltx,.xps,.zip";
+        String ext[] = extensions.split(",");
+        ArrayList<String> aux = new ArrayList<>();
+        Elements href = d.select("a");
+        for (Element element : href) {
+            for (int i = 0; i < ext.length; i++) {
+                if (element.attr("abs:href").toLowerCase().contains(ext[i])) {
+                    aux.add(element.attr("abs:href"));
+                    break;
+                }
+            }
+        }
+        files= new String[aux.size()];
+        files= aux.toArray(files);
     }
 
     private void lines(String html) {
@@ -275,7 +294,5 @@ public class Documento {
         final String json = new Gson().toJson(this);
         return json;
     }
-    
-    
 
 }
