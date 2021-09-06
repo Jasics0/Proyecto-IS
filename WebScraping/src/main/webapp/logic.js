@@ -1,9 +1,5 @@
 var xMLHttpRequest = new XMLHttpRequest();
 
-window.onload = () => {
-    document.getElementById('loading').hidden = true;
-};
-
 function findElements() {
     document.getElementById('content').innerHTML = "";
     document.getElementById('loading').hidden = false;
@@ -55,7 +51,7 @@ function processElements() {
                 site.list_links.forEach((link, index) => {
                     var headrow = links.insertRow();
                     var headcell1 = headrow.insertCell();
-                    headcell1.innerHTML = index;
+                    headcell1.innerHTML = index + 1;
                     var headcell2 = headrow.insertCell();
                     var l = document.createElement("a");
                     l.href = link;
@@ -79,7 +75,7 @@ function processElements() {
                 nlinks.className = "btn btn-outline-primary m-1 col-md-5";
                 nlinks.setAttribute("data-toggle", "modal");
                 nlinks.setAttribute("data-target", "#myModal");
-                nlinks.setAttribute("data-title", site.title);
+                nlinks.setAttribute("data-title", site.title + " - links");
                 nlinks.setAttribute("data-table", links.outerHTML);
                 nlinks.innerHTML = "Links: " + site.nlinks;
 
@@ -90,7 +86,7 @@ function processElements() {
                 site.lines_size.forEach((line, index) => {
                     var headrow = lines.insertRow();
                     var headcell1 = headrow.insertCell();
-                    headcell1.innerHTML = index;
+                    headcell1.innerHTML = index + 1;
                     var headcell2 = headrow.insertCell();
                     headcell2.innerHTML = line;
                 });
@@ -100,16 +96,18 @@ function processElements() {
                 nlines.className = "btn btn-outline-primary m-1 col-md-5";
                 nlines.setAttribute("data-toggle", "modal");
                 nlines.setAttribute("data-target", "#myModal");
-                nlines.setAttribute("data-title", site.title);
+                nlines.setAttribute("data-title", site.title + " - lines");
                 nlines.setAttribute("data-table", lines.outerHTML);
                 nlines.innerHTML = "Lines: " + site.nlines;
 
                 var word_concurr = document.createElement("table");
                 word_concurr.className = "table table-striped";
-                word_concurr.innerHTML = "<tr class='text-center'><th scope='col'>Word</th><th scope='cols'>Frequency</th></tr>";
+                word_concurr.innerHTML = "<tr class='text-center'><th scope='col'>#</th><th scope='col'>Word</th><th scope='cols'>Frequency</th></tr>";
 
-                site.words_concurrency.forEach(tuple => {
+                site.words_concurrency.forEach((tuple, index) => {
                     var headrow = word_concurr.insertRow();
+                    var headcell = headrow.insertCell();
+                    headcell.innerHTML = index + 1;
                     var headcell1 = headrow.insertCell();
                     headcell1.innerHTML = tuple.split("-")[0];
                     var headcell2 = headrow.insertCell();
@@ -121,21 +119,23 @@ function processElements() {
                 words.className = "btn btn-outline-primary m-1 col-md-5";
                 words.setAttribute("data-toggle", "modal");
                 words.setAttribute("data-target", "#myModal");
-                words.setAttribute("data-title", site.title);
+                words.setAttribute("data-title", site.title + " - words");
                 words.setAttribute("data-table", word_concurr.outerHTML);
                 words.innerHTML = "Words";
 
                 var images = document.createElement("table");
                 images.className = "table table-striped";
-                images.innerHTML = "<tr class='text-center'><th scope='col'>Link</th><th scope='cols'>Download</th></tr>";
+                images.innerHTML = "<tr class='text-center'><th scope='col'>#</th><th scope='col'>Link</th><th scope='cols'>Download</th></tr>";
 
-                site.links_image.forEach(lnk => {
+                site.links_image.forEach((lnk, index) => {
                     var headrow = images.insertRow();
+                    var headcell = headrow.insertCell();
+                    headcell.innerHTML = index + 1;
                     var headcell1 = headrow.insertCell();
                     var l = document.createElement("a");
                     l.href = lnk;
                     l.innerHTML = lnk;
-                    headcell1.className = "word-break";
+                    headcell1.className = "text-break";
                     headcell1.appendChild(l);
                     var headcell2 = headrow.insertCell();
                     var l1 = document.createElement("a");
@@ -151,9 +151,41 @@ function processElements() {
                 imgs.className = "btn btn-outline-primary m-1 col-md-5";
                 imgs.setAttribute("data-toggle", "modal");
                 imgs.setAttribute("data-target", "#myModal");
-                imgs.setAttribute("data-title", site.title);
+                imgs.setAttribute("data-title", site.title + " - images");
                 imgs.setAttribute("data-table", images.outerHTML);
                 imgs.innerHTML = "Images";
+
+                var fls = document.createElement("table");
+                fls.className = "table table-striped";
+                fls.innerHTML = "<tr class='text-center'><th scope='col'>#</th><th scope='col'>Link</th><th scope='cols'>Download</th></tr>";
+                
+                site.files.forEach((lnk, index) => {
+                    var headrow = fls.insertRow();
+                    var headcell = headrow.insertCell();
+                    headcell.innerHTML = index + 1;
+                    var headcell1 = headrow.insertCell();
+                    var l = document.createElement("a");
+                    l.href = lnk;
+                    l.innerHTML = lnk;
+                    headcell1.className = "text-break";
+                    headcell1.appendChild(l);
+                    var headcell2 = headrow.insertCell();
+                    var l1 = document.createElement("a");
+                    l1.href = lnk;
+                    l1.target = '_blank';
+                    l1.innerHTML = "<i class='bi bi-download h3'></i>";
+                    headcell2.className = "text-center";
+                    headcell2.appendChild(l1);
+                });
+                
+                var files = document.createElement("button");
+                files.type = "button";
+                files.className = "btn btn-outline-primary m-1 col-md-5";
+                files.setAttribute("data-toggle", "modal");
+                files.setAttribute("data-target", "#myModal");
+                files.setAttribute("data-title", site.title + " - files");
+                files.setAttribute("data-table", fls.outerHTML);
+                files.innerHTML = "Files";
                 
                 div.appendChild(size);
                 div.appendChild(is_form);
@@ -167,6 +199,8 @@ function processElements() {
                 border.appendChild(document.createElement("br"));
                 border.appendChild(words);
                 border.appendChild(imgs);
+                border.appendChild(document.createElement("br"));
+                border.appendChild(files);
                 content.appendChild(border);
             });
         } else {
