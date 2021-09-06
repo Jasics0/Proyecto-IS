@@ -13,7 +13,7 @@ function processElements() {
     var content = document.getElementById("content");
     if (xMLHttpRequest.readyState === 4 && xMLHttpRequest.status === 200) {
         var JSONTopicObject = eval('(' + xMLHttpRequest.responseText + ')').Pages;
-
+        console.log(JSONTopicObject);
         if (JSONTopicObject !== null) {
 
             JSONTopicObject.forEach(site => {
