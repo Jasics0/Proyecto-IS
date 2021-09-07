@@ -40,7 +40,7 @@ function processElements() {
                 is_login.type = "checkbox";
                 is_login.className = "m-1";
                 is_login.disabled = true;
-                is_login.checked = site.is_form;
+                is_login.checked = site.is_login;
                 var login = document.createElement("label");
                 login.innerHTML = "Login";
 
