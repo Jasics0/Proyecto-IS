@@ -33,8 +33,8 @@ public class Documento {
             lines(document.outerHtml());
             listLinks(document);
             verifyLink();
-            getForms(document);
             concurrency(document);
+            getForms(document);
             listImage(document);
             files(document);
         } catch (Exception e) {
@@ -143,7 +143,7 @@ public class Documento {
                     }
                 }
             }
-            
+
         }
     }
 

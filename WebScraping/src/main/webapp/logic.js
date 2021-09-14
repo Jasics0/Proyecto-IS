@@ -19,15 +19,15 @@ function processElements() {
             JSONTopicObject.forEach(site => {
                 var border = document.createElement("div");
                 border.className = "border border-info rounded text-center m-2 p-2";
-                
+
                 var title = document.createElement("h4");
                 title.innerHTML = site.title;
-                
+
                 var div = document.createElement("div");
-                
+
                 var size = document.createElement("label");
                 size.innerHTML = "<b>Size: </b>" + site.size + " kb";
-                
+
                 var is_form = document.createElement("input");
                 is_form.type = "checkbox";
                 is_form.className = "m-1";
@@ -35,7 +35,7 @@ function processElements() {
                 is_form.checked = site.is_form;
                 var form = document.createElement("label");
                 form.innerHTML = "Form";
-                
+
                 var is_login = document.createElement("input");
                 is_login.type = "checkbox";
                 is_login.className = "m-1";
@@ -61,15 +61,15 @@ function processElements() {
                     var headcell3 = headrow.insertCell();
                     headcell3.className = "text-center";
                     var check = document.createElement("i");
-                    const len = site.links_types[index].length-1;
-                    if (site.links_types[index][len] === "1"){
+                    const len = site.links_types[index].length - 1;
+                    if (site.links_types[index][len] === "1") {
                         check.className = "bi bi-check h3 text-success";
                     } else {
                         check.className = "bi bi-x h3 text-danger";
                     }
                     headcell3.appendChild(check);
                 });
-                
+
                 var nlinks = document.createElement("button");
                 nlinks.type = "button";
                 nlinks.className = "btn btn-outline-primary m-1 col-md-5";
@@ -90,7 +90,7 @@ function processElements() {
                     var headcell2 = headrow.insertCell();
                     headcell2.innerHTML = line;
                 });
-                
+
                 var nlines = document.createElement("button");
                 nlines.type = "button";
                 nlines.className = "btn btn-outline-primary m-1 col-md-5";
@@ -113,7 +113,7 @@ function processElements() {
                     var headcell2 = headrow.insertCell();
                     headcell2.innerHTML = tuple.split("-")[1];
                 });
-                
+
                 var words = document.createElement("button");
                 words.type = "button";
                 words.className = "btn btn-outline-primary m-1 col-md-5";
@@ -145,7 +145,7 @@ function processElements() {
                     headcell2.className = "text-center";
                     headcell2.appendChild(l1);
                 });
-                
+
                 var imgs = document.createElement("button");
                 imgs.type = "button";
                 imgs.className = "btn btn-outline-primary m-1 col-md-5";
@@ -158,7 +158,7 @@ function processElements() {
                 var fls = document.createElement("table");
                 fls.className = "table table-striped";
                 fls.innerHTML = "<tr class='text-center'><th scope='col'>#</th><th scope='col'>Link</th><th scope='cols'>Download</th></tr>";
-                
+
                 site.files.forEach((lnk, index) => {
                     var headrow = fls.insertRow();
                     var headcell = headrow.insertCell();
@@ -177,7 +177,7 @@ function processElements() {
                     headcell2.className = "text-center";
                     headcell2.appendChild(l1);
                 });
-                
+
                 var files = document.createElement("button");
                 files.type = "button";
                 files.className = "btn btn-outline-primary m-1 col-md-5";
@@ -186,7 +186,7 @@ function processElements() {
                 files.setAttribute("data-title", site.title + " - files");
                 files.setAttribute("data-table", fls.outerHTML);
                 files.innerHTML = "Files";
-                
+
                 div.appendChild(size);
                 div.appendChild(is_form);
                 div.appendChild(form);
@@ -214,7 +214,7 @@ $('#myModal').on('show.bs.modal', (e) => {
     var button = $(e.relatedTarget);
     var title = button.data("title");
     var table = button.data("table");
-    
+
     $('#myModalLabel').text(title);
     $('#modal-body').html(table);
 });

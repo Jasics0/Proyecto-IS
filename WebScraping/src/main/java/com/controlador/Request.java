@@ -2,7 +2,6 @@ package com.controlador;
 
 import com.google.gson.Gson;
 import com.modelo.Documento;
-import java.util.Properties;
 
 public class Request extends Thread {
 
